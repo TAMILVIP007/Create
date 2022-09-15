@@ -3,11 +3,11 @@
 import os
 from tkinter import Frame
 from tkinter.constants import RADIOBUTTON
-import pyfiglet 
+import pyfiglet
 title=pyfiglet.figlet_format("C R E A T E")
 
 
-    
+
 
 
 
@@ -16,7 +16,7 @@ if app_name == "":
     print("Please enter a valid name !")
 
 
-f =open(app_name+".py","a+")
+f = open(f"{app_name}.py", "a+")
 
 f.write('''import tkinter as tk
 from tkinter import ttk
@@ -253,16 +253,8 @@ g = tk.DoubleVar(value=75.0)
 
 
 def run():
-    f=open(app_name+".py")
-    output = []
-
-    for line in f:
-
-        if not "root.mainloop()" in line:
-
-            output.append(line)
-
-    f.close()
+    with open(f"{app_name}.py") as f:
+        output = [line for line in f if "root.mainloop()" not in line]
 
     f = open("Run_Demo.py", 'w')
 
@@ -270,11 +262,16 @@ def run():
     f.write('''\nroot.mainloop()''')
     f.flush()
     os.popen("python Run_Demo.py")
-    print("Running "+app_name+".py")
+    print(f"Running {app_name}.py")
 
 def export():
     commands=input("Enter Commands here (--onedir / --console) : ")
-    os.popen('''pyinstaller --noconfirm '''+commands+''' --icon "icon.ico" "'''+app_name+'''.py"''')
+    os.popen(
+        f'''pyinstaller --noconfirm {commands}'''
+        + ''' --icon "icon.ico" "'''
+        + app_name
+        + '''.py"'''
+    )
 
 
 
@@ -293,7 +290,7 @@ def image():
 
 ################################# MAIN APP ####################################################################
 
-app_size = input("Enter size of "+ app_name +" (w x h) : ")
+app_size = input(f"Enter size of {app_name} (w x h) : ")
 
 f.write('''
 root.geometry("'''+ app_size + '''")''')
@@ -301,7 +298,7 @@ root.geometry("'''+ app_size + '''")''')
 f.flush()
 
 
-app_R= input("Do you want to make "+ app_name +" responsive (y/n) : ")
+app_R = input(f"Do you want to make {app_name} responsive (y/n) : ")
 
 if app_R=="y":
     f.write('''
@@ -326,7 +323,7 @@ root.rowconfigure(index=2, weight=1)
 root.resizable(False,False)'''  )
     f.flush()
 
-app_theme=input("Select theme for "+ app_name +" (dark/light) :")
+app_theme = input(f"Select theme for {app_name} (dark/light) :")
 if app_theme== "dark" :
     f.write('''# Create a style
 style = ttk.Style(root)
@@ -353,7 +350,7 @@ d = tk.IntVar(value=2)''')
 f.flush()
 
 
-    
+
 print(
     115*"-"
 
@@ -374,7 +371,7 @@ def print_menu():       ## Your menu design here
     print ("10. Slider\n")
     print ("11. Progressbar\n")
     print ("12. Radio Button\n")
-    print ("13. Run Final "+app_name+"\n")
+    print(f"13. Run Final {app_name}" + "\n")
     print ("14. Export\n")
     print ("15. Exit\n")
     print ("\n",115 * "-")
